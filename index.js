@@ -4,7 +4,9 @@ const http = require('http')
 const cron = require('node-cron')
 const helmet = require('helmet')
 const rateLimit = require('express-rate-limit')
-require('dotenv').config()
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 const db = require('./config/db')
 const { Server } = require('socket.io')
 
