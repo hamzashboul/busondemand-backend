@@ -86,9 +86,9 @@ const addBooking = async (req, res) => {
       return res.status(400).json({ message: 'Bus is full' })
     }
 
-    const ip_address = req.headers['x-forwarded-for'] ||
-      req.socket.remoteAddress ||
-      'unknown'
+   const ip_address = req.headers['x-forwarded-for']?.split(',')[0].trim() || 
+                   req.socket.remoteAddress || 
+                   'unknown'
 
     const [result] = await db.query(
       'INSERT INTO bookings (student_id, trip_id, ip_address) VALUES (?, ?, ?)',
