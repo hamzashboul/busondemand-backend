@@ -6,12 +6,16 @@ const login = async (req, res) => {
   try {
     const { university_id, password } = req.body
 
-   if (!university_id) {
-  return res.status(400).json({ message: 'University ID is required' })
-}
-if (!password) {
-  return res.status(400).json({ message: 'Password is required' })
-}
+    console.log('Login attempt:', university_id)
+    console.log('JWT_SECRET exists:', !!process.env.JWT_SECRET)
+    console.log('DB_HOST:', process.env.DB_HOST)
+
+    if (!university_id) {
+      return res.status(400).json({ message: 'University ID is required' })
+    }
+    if (!password) {
+      return res.status(400).json({ message: 'Password is required' })
+    }
 
     const [users] = await db.query(
       'SELECT * FROM users WHERE university_id = ?',
@@ -34,15 +38,17 @@ if (!password) {
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     )
-res.json({
-  token,
-  role: user.role,
-  name: user.name,
-  id: user.id,
-  message: 'Login successful'
-})
+
+    res.json({
+      token,
+      role: user.role,
+      name: user.name,
+      id: user.id,
+      message: 'Login successful'
+    })
 
   } catch (error) {
+    console.error('Login error:', error.message)
     res.status(500).json({ message: 'Server error', error: error.message })
   }
 }
