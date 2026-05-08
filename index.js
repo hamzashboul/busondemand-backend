@@ -40,6 +40,7 @@ app.use(helmet())
 app.use(cors({
   origin: [
     'http://localhost:5173',
+    'https://busondemand.vercel.app',
     'https://busondemand-frontend.vercel.app',
     process.env.FRONTEND_URL
   ].filter(Boolean),
