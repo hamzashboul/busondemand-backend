@@ -5,10 +5,8 @@ const http = require('http')
 const cron = require('node-cron')
 const helmet = require('helmet')
 const rateLimit = require('express-rate-limit')
-
 const db = require('./config/db')
 const { Server } = require('socket.io')
-
 const authRoutes = require('./routes/auth')
 const busRoutes = require('./routes/buses')
 const tripRoutes = require('./routes/trips')
@@ -16,13 +14,11 @@ const bookingRoutes = require('./routes/bookings')
 const statsRoutes = require('./routes/stats')
 const reviewRoutes = require('./routes/reviews')
 const scheduleRoutes = require('./routes/schedules')
-
+const routesRoutes = require('./routes/routes')
 const { setIO } = require('./controllers/bookings')
-
 const app = express()
 app.set('trust proxy', 1)
 const server = http.createServer(app)
-
 const io = new Server(server, {
   cors: {
     origin: process.env.FRONTEND_URL || 'http://localhost:5173',
@@ -122,7 +118,7 @@ app.use('/api/bookings', bookingRoutes)
 app.use('/api/stats', statsRoutes)
 app.use('/api/reviews', reviewRoutes)
 app.use('/api/schedules', scheduleRoutes)
-
+app.use('/api/routes', routesRoutes)
 app.get('/', (req, res) => {
   res.json({ message: 'BusOnDemand API is running! 🚌' })
 })
